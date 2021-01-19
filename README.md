@@ -7,5 +7,5 @@ Simple little service to return the best know IP address of the requester. It wi
 ### Docker command
 
 ```
-docker run -i -t --rm -p 80:8080 hillimyip-microservice
+docker run -i -t --rm -p 80:8080 hilli/myip-microservice
 ```
