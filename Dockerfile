@@ -11,3 +11,4 @@ FROM scratch
 LABEL org.opencontainers.image.source http://github.com/hilli/myip-microservice
 COPY --from=builder /ipservice/ipservice .
 ENTRYPOINT ["/ipservice"]
+EXPOSE 8080
