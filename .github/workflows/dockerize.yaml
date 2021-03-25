@@ -1,0 +1,28 @@
+name: docker-build
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  BUILD_MYIP_IMAGE:
+    name: Push Docker image of the current branch to Docker Hub
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        run: echo ${{secrets.DOCKER_HUB_PASSWORD}} | docker login -u ${secrets.DOCKER_HUB_USERNAME} --password-stdin
+      - name: Build Container
+        id: docker_buildx
+        run: |
+          docker buildx create --use
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            --tag ${{ github.repository}}:${GITHUB_SHA} \
+            --tag ghcr.io/${{ github.repository}}:latest \
+            --push .
