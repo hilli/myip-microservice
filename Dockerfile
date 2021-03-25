@@ -1,8 +1,10 @@
-FROM golang:1.15.6-buster as builder
-ENV GO111MODULE=on
+FROM --platform=$BUILDPLATFORM golang:alpine as builder
+ARG TARGETARCH
+ARG TARGETOS
+ENV GO111MODULE=on GOOS=$TARGOS GOARCH=$TARGETARCH
 WORKDIR /ipservice
 COPY . /ipservice
-RUN CGO_ENABLED=0 GOOS=linux ARCH=amd64 \
+RUN CGO_ENABLED=0 \
   go build -a -tags netgo \
   -ldflags '-w -extldflags "-static"' \
   -o ipservice
