@@ -30,7 +30,7 @@ func main() {
 			fmt.Fprint(res, ip)
 		} else {
 			headers.Set("Content-Type", "application/json")
-			fmt.Fprint(res, fmt.Sprintf("{\n\t\"ip_address\": \"%s\"\n}\n", ip))
+			fmt.Fprintf(res, "{\n\t\"ip_address\": \"%s\"\n}\n", ip)
 		}
 	})
 	http.ListenAndServe(":8080", mux)

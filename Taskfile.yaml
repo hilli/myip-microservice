@@ -1,0 +1,49 @@
+# This is a Taskfile. See https://taskfile.dev
+# `brew install go-task` to install task runner or `go install github.com/go-task/task/v3/cmd/task@latest`
+# `task --list` to list all tasks
+# `task <taskname>` to run a task
+
+version: "3"
+
+tasks:
+  build:
+    desc: Build service
+    cmds:
+      - go build -o ipservice .
+
+  clean:
+    desc: Cleanup
+    cmds:
+      - rm -rf ipservice
+
+  container:
+    desc: Build a container
+    vars:
+      TAG: '{{.TAG | default "latest"}}'
+    cmds:
+      - docker build --pull -t hilli/myip-microservice:{{.TAG}} .
+
+  container-push:
+    desc: Build and push the container to Docker Hub as hilli/myip-microservice
+    vars:
+      TAG: '{{.TAG | default "latest"}}'
+    deps:
+      - task: container
+        vars:
+          TAG: '{{.TAG | default "latest"}}'
+    cmds:
+      - docker push hilli/wasm-test:{{.TAG}}
+
+  container-run:
+    desc: Run the container locally
+    deps:
+      - container
+    cmds:
+      - docker run --rm -p 8080:8080 hilli/myip-microservice:latest
+
+  default:
+    desc: Run the things
+    deps:
+      - build
+    cmds:
+      - ./ipservice
