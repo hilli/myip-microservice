@@ -32,7 +32,7 @@ tasks:
         vars:
           TAG: '{{.TAG | default "latest"}}'
     cmds:
-      - docker push hilli/wasm-test:{{.TAG}}
+      - docker push hilli/myip-microservice:{{.TAG}}
 
   container-run:
     desc: Run the container locally
